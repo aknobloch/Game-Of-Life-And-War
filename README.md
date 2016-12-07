@@ -1,7 +1,5 @@
 # Game-Of-War
-A python implementation of [Conway's Game of Life](https://www.youtube.com/watch?v=R9Plq-D1gEk) with a multi-civilization twist. 
-
-Game Of War is a cellular automaton game based on Game of Life. The rules are fairly simple:
+Game Of War is a cellular automaton game based on [Game of Life](https://www.youtube.com/watch?v=R9Plq-D1gEk). The rules are fairly simple:
 
 For each civilization, the following rules apply:
 * Any live cell with fewer than two live neighbours dies, as if caused by under-population.

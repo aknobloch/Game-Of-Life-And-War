@@ -160,7 +160,13 @@ class GraphWidget :
 	'''
 	def set_color(self, new_color) :
 	
-		self.color = new_color
+		if(new_color == GraphColor.alive_blue or new_color == GraphColor.alive_green) :
+			
+			self.color = new_color.value
+			
+		else :
+			
+			print("Must pass in a valid GraphColor color")
 	
 	
 

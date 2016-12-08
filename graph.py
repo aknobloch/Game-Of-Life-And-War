@@ -133,8 +133,16 @@ class GraphWidget :
 			
 		# otherwise, paint back to background and unmark
 		else :
+		
 			self.__paint_coordinate_color(column_clicked, row_clicked, GraphColor.background.value)
-			self.game_logic.place_empty(row_clicked, column_clicked)
+			
+			if(self.color == GraphColor.alive_green.value) :
+				
+				self.game_logic.remove_green(row_clicked, column_clicked)
+			
+			else :
+				
+				self.game_logic.remove_blue(row_clicked, column_clicked)
 			
 		
 	

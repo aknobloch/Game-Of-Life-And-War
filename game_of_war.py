@@ -3,6 +3,7 @@ from tkinter import ttk
 from graph import GraphWidget
 from graph_color import GraphColor
 from game_logic import GameLogic
+import time
 
 def select_green(graph_view, blueb, greenb) :
 
@@ -34,9 +35,7 @@ def start(startb, blueb, greenb, canvas, runner) :
 		runner.running = False;
 		startb.config(text = "Start")
 		
-	
-	
-
+		
 root = Tk()
 root.title("Game of War")
 
@@ -44,11 +43,14 @@ root.title("Game of War")
 main_frame = ttk.Frame(root)
 main_frame.grid(column = 1, row = 3)
 
-# Add graph view
-my_graph = GraphWidget(main_frame, 20, 45, 10)
+#Create game runner
+game = GameLogic()
 
-#Initialize game runner
-game_runner = GameLogic(my_graph)
+# Add graph view
+my_graph = GraphWidget(main_frame, game, 10, 10, 10)
+
+#Initialize game runner with canvas
+game.initialize(my_graph)
 
 # Add label group
 label_group = ttk.Frame(main_frame, padding = "10 0 10 20")
@@ -67,7 +69,14 @@ blue_button = ttk.Button(label_group, text = "Blue", command = lambda: select_bl
 blue_button.grid(column = 3, row = 1)
 
 # Add start button
-start_button = ttk.Button(label_group, text = "Start", command = lambda: start(start_button, blue_button, green_button, my_graph, game_runner))
+start_button = ttk.Button(label_group, text = "Start", command = lambda: start(start_button, blue_button, green_button, my_graph, game))
 start_button.grid(column = 2, row = 2, columnspan = 2)
 
-root.mainloop()
+while True:
+    
+	# update game logic
+	game.update()
+	
+	# update canvas
+	root.update_idletasks()
+	root.update()

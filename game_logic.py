@@ -60,9 +60,9 @@ class GameLogic :
 		removed = self.current_state[row][column]
 		self.current_state[row][column] = ''
 		# update counts
-		if removed == 'G'
+		if removed == 'G' :
 			self.green_column_counts -= 1
-		if removed == 'B'
+		if removed == 'B' :
 			self.blue_column_counts -= 1
 		
 	'''

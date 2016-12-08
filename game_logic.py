@@ -22,13 +22,13 @@ class GameLogic :
 	
 		self.canvas = canvas
 		
-		rows = canvas.get_rows()
-		columns = canvas.get_columns()
+		self.rows = canvas.get_rows()
+		self.columns = canvas.get_columns()
 		
-		self.current_state = [['' for x in range(columns)] for y in range(rows)]
-		self.next_state = [['' for x in range(columns)] for y in range(rows)]
-		self.green_column_counts = [0 for x in range(columns)]
-		self.blue_column_counts = [0 for x in range(columns)]
+		self.current_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
+		self.next_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
+		self.green_column_counts = [0 for x in range(self.columns)]
+		self.blue_column_counts = [0 for x in range(self.columns)]
 		
 		self.initialized = True
 	
@@ -59,7 +59,7 @@ class GameLogic :
 	
 		removed = self.current_state[row][column]
 		
-		self.current_state[row][column] = ''
+		self.current_state[row][column] = ' '
 		# update counts
 		if removed == 'G' :
 			self.green_column_counts[column] -= 1
@@ -73,7 +73,7 @@ class GameLogic :
 	'''	
 	def is_empty(self, row, column) :
 	
-		if self.current_state[row][column] == '' :
+		if self.current_state[row][column] == ' ' :
 			
 			return True
 			
@@ -96,6 +96,183 @@ class GameLogic :
 			
 		print("\n\n")
 		
+		print("\t~~~NEXT GAME STATE~~~")
+		
+		for row in self.next_state :
+			
+			print(row)
+			
+		print("\n\n")
+		
+	'''
+	Checks the surrounding cells for a new green birth potential
+	'''
+	def check_green_birth(self, row, column) :
+	
+		green_neighbors = 0
+	
+		# helps determine what to check while preventing index out of bounds
+		check_left = True
+		check_right = True
+		check_top = True
+		check_bottom = True
+		
+		if column == 1 :
+			check_left = False
+		
+		if column == self.columns - 1:
+			check_right = False
+			
+		if row == 1 :
+			check_top = False
+			
+		if row == self.rows - 1:
+			check_bottom = False
+			
+		# if left and right are potentially populated, but their sum
+		# is not at least one, it is impossible for a cell to be born 
+		if(check_left and check_right) :
+			if self.green_column_counts[column - 1] == 0 and self.green_column_counts[column + 1] == 0 :
+				return False
+				
+		# same logic as above, just applied for different situations
+		if check_left and not check_right :
+			if self.green_column_counts[column - 1] == 0 :
+				return False
+				
+		# same logic as above....
+		if check_right and not check_left :
+			if self.green_column_counts[column + 1] == 0 :
+				return False
+				
+		# if made it this far, manually check
+		if check_left :
+			if self.current_state[row][column - 1] == 'G' :
+				green_neighbors += 1
+				
+		if check_right :
+			if self.current_state[row][column + 1] == 'G' :
+				green_neighbors += 1
+				
+		if check_top :
+			if self.current_state[row - 1][column] == 'G' :
+				green_neighbors += 1
+		
+		if check_bottom :
+			if self.current_state[row + 1][column] == 'G' :
+				green_neighbors += 1
+				
+		# check top left diagonal
+		if check_left and check_top :
+			if self.current_state[row - 1][column - 1] == 'G' :
+				green_neighbors += 1
+				
+		# check bottom left diagonal
+		if check_left and check_bottom :
+			if self.current_state[row + 1][column - 1] == 'G' :
+				green_neighbors += 1
+				
+		# check top right diagonal
+		if check_right and check_top :
+			if self.current_state[row - 1][column + 1] == 'G' :
+				green_neighbors += 1
+				
+		# check bottom right diagonal
+		if check_right and check_bottom :
+			if self.current_state[row + 1][column + 1] == 'G' :
+				green_neighbors += 1
+				
+		# final logic for birth
+		if green_neighbors == 3 :
+			return True
+		else : 
+			return False
+		
+	'''
+	Checks the surrounding cells for a new blue birth potential
+	'''
+	def check_blue_birth(self, row, column) :
+	
+		blue_neighbors = 0
+	
+		# helps determine what to check while preventing index out of bounds
+		check_left = True
+		check_right = True
+		check_top = True
+		check_bottom = True
+		
+		if column == 1 :
+			check_left = False
+		
+		if column == self.columns - 1 :
+			check_right = False
+			
+		if row == 1 :
+			check_top = False
+			
+		if row == self.rows - 1 :
+			check_bottom = False
+			
+		# if left and right are potentially populated, but their sum
+		# is not at least one, it is impossible for a cell to be born 
+		if(check_left and check_right) :
+			if self.blue_column_counts[column - 1] == 0 and self.blue_column_counts[column + 1] == 0 :
+				return False
+				
+		# same logic as above, just applied for different situations
+		if check_left and not check_right :
+			if self.blue_column_counts[column - 1] == 0 :
+				return False
+				
+		# same logic as above....
+		if check_right and not check_left :
+			if self.blue_column_counts[column + 1] == 0 :
+				return False
+				
+		# if made it this far, manually check
+		if check_left :
+			if self.current_state[row][column - 1] == 'B' :
+				blue_neighbors += 1
+				
+		if check_right :
+			if self.current_state[row][column + 1] == 'B' :
+				blue_neighbors += 1
+				
+		if check_top :
+			if self.current_state[row - 1][column] == 'B' :
+				blue_neighbors += 1
+		
+		if check_bottom :
+			if self.current_state[row + 1][column] == 'B' :
+				blue_neighbors += 1
+				
+		# check top left diagonal
+		if check_left and check_top :
+			if self.current_state[row - 1][column - 1] == 'B' :
+				blue_neighbors += 1
+				
+		# check bottom left diagonal
+		if check_left and check_bottom :
+			if self.current_state[row + 1][column - 1] == 'B' :
+				blue_neighbors += 1
+				
+		# check top right diagonal
+		if check_right and check_top :
+			if self.current_state[row - 1][column + 1] == 'B' :
+				blue_neighbors += 1
+				
+		# check bottom right diagonal
+		if check_right and check_bottom : 
+			if self.current_state[row + 1][column + 1] == 'B' :
+				blue_neighbors += 1
+				
+		# final logic for birth
+		if blue_neighbors == 3 :
+			return True
+		else : 
+			return False
+					
+	
 	'''
 	Main logic of the class. Loops through all of the cells and determines next state
 	'''	
@@ -109,4 +286,71 @@ class GameLogic :
 			return
 			
 		# Game Logic
+		time.sleep(2)
+		# start at one because zero indexes are never populated
+		for row in range(1, self.rows) :
+		
+			for column in range(1, self.columns) :
+				
+				empty_cell = self.is_empty(row, column)
+				
+				# if an empty cell, check for possible births
+				if empty_cell :
+				
+					green_birth = self.check_green_birth(row, column)
+					blue_birth = self.check_blue_birth(row, column)
+					
+					if green_birth and blue_birth :
+						
+						self.next_state[row][column] = ' '
+						
+					elif green_birth :
+						
+						self.next_state[row][column] = 'G'
+						
+					elif blue_birth :
+						
+						self.next_state[row][column] = 'B'
+				
+				# otherwise check other conditions
+				else :
+					
+					self.next_state[row][column] = self.current_state[row][column]
+				
+		
+		self.update_canvas()
+		
+		
+	def update_canvas(self) :
+		
+		self.__print()
+		
+		for row in range(1, self.rows) :
+		
+			for column in range(1, self.columns) :
+				
+				previous_cell = self.current_state[row][column]
+				current_cell = self.next_state[row][column]
+				
+				# check visited blue
+				if previous_cell == 'B' and current_cell == ' ' :
+					self.canvas.paint_visited_blue(row, column)
+					
+				# check visited green
+				elif previous_cell == 'G' and current_cell == ' ' :
+					self.canvas.paint_visited_green(row, column)
+					
+				# check current green
+				elif current_cell == 'G' :
+					self.canvas.paint_alive_green(row, column)
+					
+				# check current blue
+				elif current_cell == 'B' :
+					self.canvas.paint_alive_blue(row, column)
+					
+		# after, swap current state with next state
+		self.current_state = self.next_state
+		self.next_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
+		
+				
 		

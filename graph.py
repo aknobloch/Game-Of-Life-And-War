@@ -34,7 +34,7 @@ class GraphWidget :
 	Paints the square associated with the given column and row 
 	to the color that is currently set.
 	'''
-	def paint_coordinate(self, column, row) :
+	def paint_coordinate(self, row, column) :
 	
 		# calculate x and y to paint
 		x1 = column * self.cell_width
@@ -48,7 +48,7 @@ class GraphWidget :
 	'''
 	Paints the indicated column and row the given color.
 	'''
-	def __paint_coordinate_color(self, column, row, paint_color):
+	def __paint_coordinate_color(self, row, column, paint_color):
 	
 		# calculate x and y to paint
 		x1 = column * self.cell_width
@@ -63,43 +63,43 @@ class GraphWidget :
 	'''
 	Paints the column and row the appropriate color
 	'''	
-	def paint_clear(self, column, row) :
+	def paint_clear(self, row, column) :
 		
 		# paint it the default background
-		self.__paint_coordinate_color(column, row, GraphColor.background.value)
+		self.__paint_coordinate_color(row, column, GraphColor.background.value)
 	
 	'''
 	Paints the column and row the appropriate color
 	'''
-	def paint_alive_green(self, column, row) :
+	def paint_alive_green(self, row, column) :
 				
 		# paint it the alive green
-		self.__paint_coordinate_color(column, row, GraphColor.alive_green.value)
+		self.__paint_coordinate_color(row, column, GraphColor.alive_green.value)
 	
 	'''
 	Paints the column and row the appropriate color
 	'''	
-	def paint_dead_green(self, column, row) :
+	def paint_visited_green(self, row, column) :
 	
 		# paint it the visited green
-		self.__paint_coordinate_color(column, row, GraphColor.visited_green.value)
+		self.__paint_coordinate_color(row, column, GraphColor.visited_green.value)
 		
 	'''
 	Paints the column and row the appropriate color
 	'''	
-	def paint_visited_blue(self, column, row) :
+	def paint_alive_blue(self, row, column) :
 		
 		# paint it the alive blue
-		self.__paint_coordinate_color(column, row, GraphColor.alive_blue.value)
+		self.__paint_coordinate_color(row, column, GraphColor.alive_blue.value)
 		
 		
 	'''
 	Paints the column and row the appropriate color
 	'''	
-	def paint_visited_blue(self, column, row) :
+	def paint_visited_blue(self, row, column) :
 		
 		# paint it the visited blue
-		self.__paint_coordinate_color(column, row, GraphColor.visited_blue.value)
+		self.__paint_coordinate_color(row, column, GraphColor.visited_blue.value)
 	
 	'''
 	Defines the functionality for when the user clicks the graph.
@@ -125,7 +125,7 @@ class GraphWidget :
 		
 		# if the square hasn't been selected, paint color and mark
 		if(self.game_logic.is_empty(row_clicked, column_clicked)) :
-			self.__paint_coordinate_color(column_clicked, row_clicked, self.color)
+			self.__paint_coordinate_color(row_clicked, column_clicked, self.color)
 			
 			if(self.color == GraphColor.alive_green.value) :
 				
@@ -138,7 +138,7 @@ class GraphWidget :
 		# otherwise, paint back to background and unmark
 		else :
 		
-			self.__paint_coordinate_color(column_clicked, row_clicked, GraphColor.background.value)
+			self.__paint_coordinate_color(row_clicked, column_clicked, GraphColor.background.value)
 			self.game_logic.remove_cell(row_clicked, column_clicked)
 			
 			

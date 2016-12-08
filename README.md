@@ -10,4 +10,5 @@ For each civilization, the following rules apply:
 When civilizations meet, the following rules apply:
 * A live cell surrounded by 2 or more neighbors of the opposing civiliation is killed, as if by war.
 * A live cell existing next to only one neighbor of the opposing civilization becomes entrenched until killed off or aided.
+* A dead cell with even blue neighbors and even green neighbors stays dead.
 

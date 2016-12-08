@@ -111,7 +111,9 @@ class GraphWidget :
 		column_clicked = int(event.x / self.cell_width)
 		row_clicked = int(event.y / self.cell_width)
 		
-		
+		# check for index out of bounds
+		if(column_clicked > self.total_columns - 1 or row_clicked > self.total_rows - 1) :
+			return
 		
 		# if the square hasn't been selected, paint color and mark
 		if(self.initial_colors[row_clicked][column_clicked] == 0) :
@@ -133,10 +135,10 @@ class GraphWidget :
 		self.window = Canvas(self.root, 
 							width = (self.total_columns * self.cell_width),
 							height = (self.total_rows * self.cell_width), 
-							borderwidth = 0, 
+							borderwidth = 10, 
 							highlightthickness=0)
 							
-		self.window.pack(side = "top", fill = "both", expand = "true")
+		self.window.grid(column = 1, row = 1)
 		self.window.bind("<Button-1>", self.on_click)
 	
 	'''

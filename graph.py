@@ -27,7 +27,6 @@ class GraphWidget :
 		self.__create_cells()
 		
 		self.initial_colors = [[0 for y in range(self.total_rows)] for x in range(self.total_columns)]
-		print(self.initial_colors)
 		
 	
 	'''
@@ -111,7 +110,17 @@ class GraphWidget :
 		column_clicked = int(event.x / self.cell_width)
 		row_clicked = int(event.y / self.cell_width)
 		
-		self.__paint_coordinate_color(column_clicked, row_clicked, self.color)
+		# if the square hasn't been selected, paint color and mark
+		if(self.initial_colors[row_clicked][column_clicked] == 0) :
+			self.__paint_coordinate_color(column_clicked, row_clicked, self.color)
+			self.initial_colors[row_clicked][column_clicked] = 1
+			
+		# otherwise, paint back to background and unmark
+		else :
+			self.__paint_coordinate_color(column_clicked, row_clicked, GraphColor.background.value)
+			self.initial_colors[row_clicked][column_clicked] = 0
+			
+		self.__print_graph()
 		
 	
 	'''
@@ -151,6 +160,14 @@ class GraphWidget :
 	
 		self.color = new_color
 	
+	'''
+	Debugging purposes
+	'''
+	def __print_graph(self) :
+		
+		for row in self.initial_colors :
+			
+			print(row)
 	
 
 

@@ -10,6 +10,8 @@ keeping track of the chosen cells and current game board.
 
 class GraphWidget :
 	
+	paint_enabled = True
+	
 	'''
 	Constructor takes in the root widget for this display,
 	as well as the total columns, rows and the width each should be.
@@ -106,6 +108,9 @@ class GraphWidget :
 	If the selected square is already painted, reverts back to background.
 	'''
 	def on_click(self, event) :
+	
+		if not self.paint_enabled :
+			return
 	
 		# determine the column and row selected
 		column_clicked = int(event.x / self.cell_width)

@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from graph import GraphWidget
 from graph_color import GraphColor
+from game_logic import GameLogic
 
 def select_green(graph_view, blueb, greenb) :
 
@@ -15,6 +16,26 @@ def select_blue(graph_view, blueb, greenb) :
 	graph_view.set_color(GraphColor.alive_blue)
 	greenb.state(["!disabled"])
 	blueb.state(["disabled"])
+	
+def start(startb, blueb, greenb, canvas, runner) :
+	
+	canvas.paint_enabled = False
+	greenb.state(["disabled"])
+	blueb.state(["disabled"])
+	
+	# if game is not running
+	if(not runner.running) :
+		
+		runner.running = True;
+		startb.config(text = "Stop")
+		
+	else :
+	
+		runner.running = False;
+		startb.config(text = "Start")
+		
+	
+	
 
 root = Tk()
 root.title("Game of War")
@@ -25,6 +46,9 @@ main_frame.grid(column = 1, row = 3)
 
 # Add graph view
 my_graph = GraphWidget(main_frame, 20, 45, 10)
+
+#Initialize game runner
+game_runner = GameLogic(my_graph)
 
 # Add label group
 label_group = ttk.Frame(main_frame, padding = "10 0 10 20")
@@ -41,5 +65,9 @@ green_button.state(["disabled"])
 # Add blue color selection button
 blue_button = ttk.Button(label_group, text = "Blue", command = lambda: select_blue(my_graph, blue_button, green_button))
 blue_button.grid(column = 3, row = 1)
+
+# Add start button
+start_button = ttk.Button(label_group, text = "Start", command = lambda: start(start_button, blue_button, green_button, my_graph, game_runner))
+start_button.grid(column = 2, row = 2, columnspan = 2)
 
 root.mainloop()

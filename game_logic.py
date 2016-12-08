@@ -40,7 +40,7 @@ class GameLogic :
 		self.current_state[row][column] = 'G'
 		# update counts
 		self.green_column_counts[column] += 1
-		self.__print()
+		
 	
 	'''
 	Places a blue marker in the indicated cell, increments counter.
@@ -50,7 +50,7 @@ class GameLogic :
 		self.current_state[row][column] = 'B'
 		# update counts
 		self.blue_column_counts[column] += 1
-		self.__print()
+		
 		
 	'''
 	Removes a marker from the indicated cell, decrements counter.
@@ -66,7 +66,7 @@ class GameLogic :
 		if removed == 'B' :
 			self.blue_column_counts[column] -= 1
 			
-		self.__print()
+		
 		
 	'''
 	Returns whether or not the inidicated cell is occupied
@@ -274,6 +274,71 @@ class GameLogic :
 					
 	
 	'''
+	Finds the number of surrounding cells with the given search char
+	'''
+	def search_surroundings(self, row, column, search_char) :
+	
+		neighbors = 0
+	
+		# helps determine what to check while preventing index out of bounds
+		check_left = True
+		check_right = True
+		check_top = True
+		check_bottom = True
+		
+		if column == 1 :
+			check_left = False
+		
+		if column == self.columns - 1:
+			check_right = False
+			
+		if row == 1 :
+			check_top = False
+			
+		if row == self.rows - 1:
+			check_bottom = False
+			
+		
+		if check_left :
+			if self.current_state[row][column - 1] == search_char:
+				neighbors += 1
+				
+		if check_right :
+			if self.current_state[row][column + 1] == search_char :
+				neighbors += 1
+				
+		if check_top :
+			if self.current_state[row - 1][column] == search_char :
+				neighbors += 1
+		
+		if check_bottom :
+			if self.current_state[row + 1][column] == search_char :
+				neighbors += 1
+				
+		# check top left diagonal
+		if check_left and check_top :
+			if self.current_state[row - 1][column - 1] == search_char :
+				neighbors += 1
+				
+		# check bottom left diagonal
+		if check_left and check_bottom :
+			if self.current_state[row + 1][column - 1] == search_char :
+				neighbors += 1
+				
+		# check top right diagonal
+		if check_right and check_top :
+			if self.current_state[row - 1][column + 1] == search_char :
+				neighbors += 1
+				
+		# check bottom right diagonal
+		if check_right and check_bottom :
+			if self.current_state[row + 1][column + 1] == search_char :
+				neighbors += 1
+				
+		return neighbors
+	
+	
+	'''
 	Main logic of the class. Loops through all of the cells and determines next state
 	'''	
 	def update(self) :
@@ -286,7 +351,7 @@ class GameLogic :
 			return
 			
 		# Game Logic
-		time.sleep(2)
+		#time.sleep(2)
 		# start at one because zero indexes are never populated
 		for row in range(1, self.rows) :
 		
@@ -312,10 +377,41 @@ class GameLogic :
 						
 						self.next_state[row][column] = 'B'
 				
-				# otherwise check other conditions
+				# otherwise check blue stuff
+				elif self.current_state[row][column] == 'B' :
+				
+					surrounding_green = self.search_surroundings(row, column, 'G')
+					surrounding_blue = self.search_surroundings(row, column, 'B')
+					
+					#check population dead conditions
+					if surrounding_blue < 2 or surrounding_blue > 3 :
+						self.next_state[row][column] = ' '
+					
+					# check battle dead conditions
+					elif surrounding_green > 1 and surrounding_green > surrounding_blue :
+						self.next_state[row][column] = ' '
+					
+					else :
+						self.next_state[row][column] = 'B'
+					
+				
+				# otherwise check green stuff
 				else :
 					
-					self.next_state[row][column] = self.current_state[row][column]
+					surrounding_green = self.search_surroundings(row, column, 'G')
+					surrounding_blue = self.search_surroundings(row, column, 'B')
+					
+					#check population dead conditions
+					if surrounding_green < 2 or surrounding_green > 3 :
+						self.next_state[row][column] = ' '
+					
+					# check battle dead conditions
+					elif surrounding_blue > 1 and surrounding_blue > surrounding_green :
+						self.next_state[row][column] = ' '
+					
+					else :
+						self.next_state[row][column] = 'G'
+					
 				
 		
 		self.update_canvas()
@@ -323,7 +419,6 @@ class GameLogic :
 		
 	def update_canvas(self) :
 		
-		self.__print()
 		
 		for row in range(1, self.rows) :
 		
@@ -335,18 +430,22 @@ class GameLogic :
 				# check visited blue
 				if previous_cell == 'B' and current_cell == ' ' :
 					self.canvas.paint_visited_blue(row, column)
+					self.blue_column_counts[column] -= 1
 					
 				# check visited green
 				elif previous_cell == 'G' and current_cell == ' ' :
 					self.canvas.paint_visited_green(row, column)
+					self.green_column_counts[column] -= 1
 					
 				# check current green
 				elif current_cell == 'G' :
 					self.canvas.paint_alive_green(row, column)
+					self.green_column_counts[column] += 1
 					
 				# check current blue
 				elif current_cell == 'B' :
 					self.canvas.paint_alive_blue(row, column)
+					self.blue_column_counts[column] += 1
 					
 		# after, swap current state with next state
 		self.current_state = self.next_state

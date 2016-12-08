@@ -47,7 +47,7 @@ main_frame.grid(column = 1, row = 3)
 game = GameLogic()
 
 # Add graph view
-my_graph = GraphWidget(main_frame, game, 10, 10, 10)
+my_graph = GraphWidget(main_frame, game, 50, 100, 10)
 
 #Initialize game runner with canvas
 game.initialize(my_graph)

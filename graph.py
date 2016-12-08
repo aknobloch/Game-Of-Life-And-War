@@ -1,21 +1,14 @@
 from tkinter import *
 from tkinter import ttk
+from graph_color import GraphColor
+
 '''
 GraphWidget provides the functionality for displaying the board
 game's display. It handles user input for seeding, as well as 
 keeping track of the chosen cells and current game board.
-
 '''
-class GraphWidget :
-	
 
-	empty = "#f5f5f0"
-	
-	visited_green = "#99ff99" 
-	alive_green = "#009933" 
-	
-	visited_blue = "#33ccff" 
-	alive_blue = "#0033cc" 
+class GraphWidget :
 	
 	'''
 	Constructor takes in the root widget for this display,
@@ -26,12 +19,15 @@ class GraphWidget :
 		self.total_rows = rows
 		self.total_columns = columns
 		self.cell_width = width
-		self.color = self.alive_green
+		self.color = GraphColor.alive_green.value
 		
 		self.root = rootWidget;
 		
 		self.__initialize_window()
 		self.__create_cells()
+		
+		self.initial_colors = [[0 for y in range(self.total_rows)] for x in range(self.total_columns)]
+		print(self.initial_colors)
 		
 	
 	'''
@@ -52,7 +48,7 @@ class GraphWidget :
 	'''
 	Paints the indicated column and row the given color.
 	'''
-	def paint_coordinate_color(self, column, row, paint_color):
+	def __paint_coordinate_color(self, column, row, paint_color):
 	
 		# calculate x and y to paint
 		x1 = column * self.cell_width
@@ -63,7 +59,6 @@ class GraphWidget :
 		# paint it the current color
 		self.window.create_rectangle(x1, y1, x2, y2, fill = paint_color)
 		
-		self.print_graph()
 		
 	'''
 	Paints the column and row the appropriate color
@@ -71,7 +66,7 @@ class GraphWidget :
 	def paint_clear(self, column, row) :
 		
 		# paint it the default background
-		self.paint_coordinate_color(column, row, self.empty)
+		self.__paint_coordinate_color(column, row, GraphColor.background.value)
 	
 	'''
 	Paints the column and row the appropriate color
@@ -79,7 +74,7 @@ class GraphWidget :
 	def paint_alive_green(self, column, row) :
 				
 		# paint it the alive green
-		self.paint_coordinate_color(column, row, self.alive_green)
+		self.__paint_coordinate_color(column, row, GraphColor.alive_green.value)
 	
 	'''
 	Paints the column and row the appropriate color
@@ -87,7 +82,7 @@ class GraphWidget :
 	def paint_dead_green(self, column, row) :
 	
 		# paint it the visited green
-		self.paint_coordinate_color(column, row, self.visited_green)
+		self.__paint_coordinate_color(column, row, GraphColor.visited_green.value)
 		
 	'''
 	Paints the column and row the appropriate color
@@ -95,7 +90,7 @@ class GraphWidget :
 	def paint_visited_blue(self, column, row) :
 		
 		# paint it the alive blue
-		self.paint_coordinate_color(column, row, self.alive_blue)
+		self.__paint_coordinate_color(column, row, GraphColor.alive_blue.value)
 		
 		
 	'''
@@ -104,7 +99,7 @@ class GraphWidget :
 	def paint_visited_blue(self, column, row) :
 		
 		# paint it the visited blue
-		self.paint_coordinate_color(column, row, self.visited_blue)
+		self.__paint_coordinate_color(column, row, GraphColor.visited_blue.value)
 	
 	'''
 	Defines the functionality for when the user clicks the graph.
@@ -116,7 +111,7 @@ class GraphWidget :
 		column_clicked = int(event.x / self.cell_width)
 		row_clicked = int(event.y / self.cell_width)
 		
-		self.paint_coordinate_color(column_clicked, row_clicked, self.color)
+		self.__paint_coordinate_color(column_clicked, row_clicked, self.color)
 		
 	
 	'''
@@ -147,7 +142,7 @@ class GraphWidget :
 				x2 = x1 + self.cell_width
 				y2 = y1 + self.cell_width
 				
-				self.window.create_rectangle(x1, y1, x2, y2, fill = self.empty)
+				self.window.create_rectangle(x1, y1, x2, y2, fill = GraphColor.background.value)
 				
 	'''
 	Sets the color attribute to the specified color

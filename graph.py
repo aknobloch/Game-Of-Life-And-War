@@ -16,19 +16,18 @@ class GraphWidget :
 	Constructor takes in the root widget for this display,
 	as well as the total columns, rows and the width each should be.
 	'''
-	def __init__(self, rootWidget, rows, columns, width) :
+	def __init__(self, root_widget, logic_controller, rows, columns, width) :
 		
 		self.total_rows = rows
 		self.total_columns = columns
 		self.cell_width = width
 		self.color = GraphColor.alive_green.value
 		
-		self.root = rootWidget;
+		self.root = root_widget
+		self.game_logic = logic_controller
 		
 		self.__initialize_window()
 		self.__create_cells()
-		
-		self.initial_colors = [[0 for x in range(self.total_columns)] for y in range(self.total_rows)]
 		
 	
 	'''
@@ -121,14 +120,21 @@ class GraphWidget :
 			return
 		
 		# if the square hasn't been selected, paint color and mark
-		if(self.initial_colors[row_clicked][column_clicked] == 0) :
+		if(self.game_logic.is_empty(row_clicked, column_clicked)) :
 			self.__paint_coordinate_color(column_clicked, row_clicked, self.color)
-			self.initial_colors[row_clicked][column_clicked] = 1
+			
+			if(self.color == GraphColor.alive_green.value) :
+				
+				self.game_logic.place_green(row_clicked, column_clicked)
+			
+			else :
+				
+				self.game_logic.place_blue(row_clicked, column_clicked)
 			
 		# otherwise, paint back to background and unmark
 		else :
 			self.__paint_coordinate_color(column_clicked, row_clicked, GraphColor.background.value)
-			self.initial_colors[row_clicked][column_clicked] = 0
+			self.game_logic.place_empty(row_clicked, column_clicked)
 			
 		
 	
@@ -174,6 +180,12 @@ class GraphWidget :
 		else :
 			
 			print("Must pass in a valid GraphColor color")
+			
+	def get_rows(self) :
+		return self.total_rows
+		
+	def get_columns(self) :
+		return self.total_columns
 	
 	
 

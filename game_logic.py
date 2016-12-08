@@ -53,17 +53,20 @@ class GameLogic :
 		self.__print()
 		
 	'''
-	Removes a green marker from the indicated cell, decrements counter.
+	Removes a marker from the indicated cell, decrements counter.
 	'''
 	def remove_cell(self, row, column) :
 	
 		removed = self.current_state[row][column]
+		
 		self.current_state[row][column] = ''
 		# update counts
 		if removed == 'G' :
-			self.green_column_counts -= 1
+			self.green_column_counts[column] -= 1
 		if removed == 'B' :
-			self.blue_column_counts -= 1
+			self.blue_column_counts[column] -= 1
+			
+		self.__print()
 		
 	'''
 	Returns whether or not the inidicated cell is occupied

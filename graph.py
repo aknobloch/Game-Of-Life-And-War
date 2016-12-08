@@ -64,6 +64,14 @@ class GraphWidget :
 		self.window.create_rectangle(x1, y1, x2, y2, fill = paint_color)
 		
 		self.print_graph()
+		
+	'''
+	Paints the column and row the appropriate color
+	'''	
+	def paint_clear(self, column, row) :
+		
+		# paint it the default background
+		self.paint_coordinate_color(column, row, self.empty)
 	
 	'''
 	Paints the column and row the appropriate color
@@ -147,6 +155,7 @@ class GraphWidget :
 	def set_color(self, new_color) :
 	
 		self.color = new_color
+	
 	
 
 

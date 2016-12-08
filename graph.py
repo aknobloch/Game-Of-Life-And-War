@@ -118,6 +118,10 @@ class GraphWidget :
 		# check for index out of bounds
 		if(column_clicked > self.total_columns - 1 or row_clicked > self.total_rows - 1) :
 			return
+			
+		# check for zero index
+		if(column_clicked == 0) or (row_clicked == 0) :
+			return
 		
 		# if the square hasn't been selected, paint color and mark
 		if(self.game_logic.is_empty(row_clicked, column_clicked)) :
@@ -135,14 +139,8 @@ class GraphWidget :
 		else :
 		
 			self.__paint_coordinate_color(column_clicked, row_clicked, GraphColor.background.value)
+			self.game_logic.remove_cell(row_clicked, column_clicked)
 			
-			if(self.color == GraphColor.alive_green.value) :
-				
-				self.game_logic.remove_green(row_clicked, column_clicked)
-			
-			else :
-				
-				self.game_logic.remove_blue(row_clicked, column_clicked)
 			
 		
 	

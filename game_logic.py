@@ -414,10 +414,15 @@ class GameLogic :
 					
 				
 		
-		self.update_canvas()
+		self.update_game()
 		
 		
-	def update_canvas(self) :
+	'''
+	Updates the game, by sending appropriate commands to the canvas to paint,
+	determining new counts for green and blue columns and then setting the
+	states for the next round.
+	'''
+	def update_game(self) :
 		
 		
 		for row in range(1, self.rows) :
@@ -449,6 +454,14 @@ class GameLogic :
 					
 		# after, swap current state with next state
 		self.current_state = self.next_state
+		self.next_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
+		
+	'''
+	Resets the game back to a new game.
+	'''
+	def reset(self) :
+		
+		self.current_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
 		self.next_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
 		
 				

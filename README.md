@@ -8,7 +8,7 @@ For each civilization, the following rules apply:
 * Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
 When civilizations meet, the following rules apply:
-* A live cell surrounded by 2 or more neighbors of the opposing civiliation is killed, as if by war.
+* A live cell surrounded by more than one neighbor of the opposing civiliation and less than the number of like neighbors is killed, as if by war.
 * A live cell existing next to only one neighbor of the opposing civilization becomes entrenched until killed off or aided.
 * A dead cell with even blue neighbors and even green neighbors stays dead.
 

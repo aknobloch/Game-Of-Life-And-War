@@ -26,7 +26,7 @@ class GraphWidget :
 		self.__initialize_window()
 		self.__create_cells()
 		
-		self.initial_colors = [[0 for y in range(self.total_rows)] for x in range(self.total_columns)]
+		self.initial_colors = [[0 for x in range(self.total_columns)] for y in range(self.total_rows)]
 		
 	
 	'''
@@ -103,12 +103,15 @@ class GraphWidget :
 	'''
 	Defines the functionality for when the user clicks the graph.
 	Paints the coordinate clicked to the current color attribute.
+	If the selected square is already painted, reverts back to background.
 	'''
 	def on_click(self, event) :
 	
 		# determine the column and row selected
 		column_clicked = int(event.x / self.cell_width)
 		row_clicked = int(event.y / self.cell_width)
+		
+		
 		
 		# if the square hasn't been selected, paint color and mark
 		if(self.initial_colors[row_clicked][column_clicked] == 0) :
@@ -120,7 +123,6 @@ class GraphWidget :
 			self.__paint_coordinate_color(column_clicked, row_clicked, GraphColor.background.value)
 			self.initial_colors[row_clicked][column_clicked] = 0
 			
-		self.__print_graph()
 		
 	
 	'''
@@ -160,14 +162,6 @@ class GraphWidget :
 	
 		self.color = new_color
 	
-	'''
-	Debugging purposes
-	'''
-	def __print_graph(self) :
-		
-		for row in self.initial_colors :
-			
-			print(row)
 	
 
 

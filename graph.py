@@ -194,6 +194,16 @@ class GraphWidget :
 		
 	def get_columns(self) :
 		return self.total_columns
+		
+	def reset(self) :
+		
+		self.paint_enabled = True
+		
+		for row in range(self.total_rows) :
+
+			for column in range(self.total_columns) :
+				
+				self.__paint_coordinate_color(row, column, GraphColor.background.value)
 	
 	
 

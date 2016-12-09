@@ -8,6 +8,8 @@ import time
 def start(startb, blueb, greenb, canvas, runner) :
 	
 	canvas.paint_enabled = False
+	blueb.state(["disabled"])
+	greenb.state(["disabled"])
 	
 	# if game is not running
 	if(not runner.running) :
@@ -20,6 +22,13 @@ def start(startb, blueb, greenb, canvas, runner) :
 		runner.running = False;
 		startb.config(text = "Start")
 		
+def reset(startb, blueb, greenb, canvas, game_runner) :
+	
+	canvas.reset()
+	startb.config(text = "Start")
+	blueb.state(["!disabled"])
+	greenb.state(["!disabled"])
+	game_runner.reset()
 
 # Initialize window
 root = Tk()
@@ -66,7 +75,11 @@ blue_button.grid(column = 3, row = 1)
 
 # Add start button
 start_button = ttk.Button(label_group, text = "Start", command = lambda: start(start_button, blue_button, green_button, my_graph, game))
-start_button.grid(column = 2, row = 2, columnspan = 2)
+start_button.grid(column = 3, row = 2)
+
+# Add reset button
+reset_button = ttk.Button(label_group, text = "Reset", command = lambda: reset(start_button, blue_button, green_button, my_graph, game))
+reset_button.grid(column = 2, row = 2)
 
 while True:
     

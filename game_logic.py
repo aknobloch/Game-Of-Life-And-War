@@ -283,6 +283,7 @@ class GameLogic :
 	'''
 	def reset(self) :
 		
+		self.running = False
 		self.current_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
 		self.next_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
 		

@@ -12,6 +12,8 @@ When civilizations meet, the following rules apply:
 * A live cell surrounded by more neighbors of the opposing civiliation than allied neighbors is killed, as if by war.
 * A dead cell with even blue neighbors and even green neighbors stays dead.
 
+Additionally, Game of War does not adhere to the standard infinite world that most Game of Life boards follow. Instead, Game of War takes place in a finite space.
+
 ---
 
 This project turned out to be far more complex than I intially assumed, for a few reasons. 

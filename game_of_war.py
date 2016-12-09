@@ -35,19 +35,27 @@ def start(startb, blueb, greenb, canvas, runner) :
 		runner.running = False;
 		startb.config(text = "Start")
 		
-		
+
+# Initialize window
 root = Tk()
 root.title("Game of War")
 
-# Initialize window
+# Initialize frame
 main_frame = ttk.Frame(root)
 main_frame.grid(column = 1, row = 3)
 
 #Create game runner
 game = GameLogic()
 
-# Add graph view
-my_graph = GraphWidget(main_frame, game, 50, 100, 10)
+# calculate screen size to determine game board size
+screen_width = root.winfo_screenwidth() * 1/2  # game board coveres 3/4 of screen
+screen_height = root.winfo_screenheight() * 1/2
+square_pixel_size = 10
+
+game_board_len = int(screen_width / square_pixel_size)
+game_board_height = int(screen_height / square_pixel_size)
+
+my_graph = GraphWidget(main_frame, game, game_board_height, game_board_len, square_pixel_size)
 
 #Initialize game runner with canvas
 game.initialize(my_graph)
@@ -78,5 +86,4 @@ while True:
 	game.update()
 	
 	# update canvas
-	root.update_idletasks()
 	root.update()

@@ -26,6 +26,8 @@ class GraphWidget :
 		self.root = root_widget
 		self.game_logic = logic_controller
 		
+		self.cells = [[None for x in range(self.total_columns)] for y in range(self.total_rows)]
+		
 		self.__initialize_window()
 		self.__create_cells()
 		
@@ -43,7 +45,7 @@ class GraphWidget :
 		y2 = y1 + self.cell_width
 				
 		# paint it the current color
-		self.window.create_rectangle(x1, y1, x2, y2, fill = self.color)
+		self.window.itemconfig(self.cells[row][column], fill = self.color)
 	
 	'''
 	Paints the indicated column and row the given color.
@@ -56,8 +58,8 @@ class GraphWidget :
 		x2 = x1 + self.cell_width
 		y2 = y1 + self.cell_width
 				
-		# paint it the current color
-		self.window.create_rectangle(x1, y1, x2, y2, fill = paint_color)
+		# paint it the specified color
+		self.window.itemconfig(self.cells[row][column], fill = paint_color)
 		
 		
 	'''
@@ -172,7 +174,7 @@ class GraphWidget :
 				x2 = x1 + self.cell_width
 				y2 = y1 + self.cell_width
 				
-				self.window.create_rectangle(x1, y1, x2, y2, fill = GraphColor.background.value)
+				self.cells[row][column] = self.window.create_rectangle(x1, y1, x2, y2, fill = GraphColor.background.value)
 				
 	'''
 	Sets the color attribute to the specified color

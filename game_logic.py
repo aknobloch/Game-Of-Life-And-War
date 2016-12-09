@@ -104,174 +104,6 @@ class GameLogic :
 			
 		print("\n\n")
 		
-	'''
-	Checks the surrounding cells for a new green birth potential
-	'''
-	def check_green_birth(self, row, column) :
-	
-		green_neighbors = 0
-	
-		# helps determine what to check while preventing index out of bounds
-		check_left = True
-		check_right = True
-		check_top = True
-		check_bottom = True
-		
-		if column == 1 :
-			check_left = False
-		
-		if column == self.columns - 1:
-			check_right = False
-			
-		if row == 1 :
-			check_top = False
-			
-		if row == self.rows - 1:
-			check_bottom = False
-			
-		# if left and right are potentially populated, but their sum
-		# is not at least one, it is impossible for a cell to be born 
-		if(check_left and check_right) :
-			if self.green_column_counts[column - 1] == 0 and self.green_column_counts[column + 1] == 0 :
-				return False
-				
-		# same logic as above, just applied for different situations
-		if check_left and not check_right :
-			if self.green_column_counts[column - 1] == 0 :
-				return False
-				
-		# same logic as above....
-		if check_right and not check_left :
-			if self.green_column_counts[column + 1] == 0 :
-				return False
-				
-		# if made it this far, manually check
-		if check_left :
-			if self.current_state[row][column - 1] == 'G' :
-				green_neighbors += 1
-				
-		if check_right :
-			if self.current_state[row][column + 1] == 'G' :
-				green_neighbors += 1
-				
-		if check_top :
-			if self.current_state[row - 1][column] == 'G' :
-				green_neighbors += 1
-		
-		if check_bottom :
-			if self.current_state[row + 1][column] == 'G' :
-				green_neighbors += 1
-				
-		# check top left diagonal
-		if check_left and check_top :
-			if self.current_state[row - 1][column - 1] == 'G' :
-				green_neighbors += 1
-				
-		# check bottom left diagonal
-		if check_left and check_bottom :
-			if self.current_state[row + 1][column - 1] == 'G' :
-				green_neighbors += 1
-				
-		# check top right diagonal
-		if check_right and check_top :
-			if self.current_state[row - 1][column + 1] == 'G' :
-				green_neighbors += 1
-				
-		# check bottom right diagonal
-		if check_right and check_bottom :
-			if self.current_state[row + 1][column + 1] == 'G' :
-				green_neighbors += 1
-				
-		# final logic for birth
-		if green_neighbors == 3 :
-			return True
-		else : 
-			return False
-		
-	'''
-	Checks the surrounding cells for a new blue birth potential
-	'''
-	def check_blue_birth(self, row, column) :
-	
-		blue_neighbors = 0
-	
-		# helps determine what to check while preventing index out of bounds
-		check_left = True
-		check_right = True
-		check_top = True
-		check_bottom = True
-		
-		if column == 1 :
-			check_left = False
-		
-		if column == self.columns - 1 :
-			check_right = False
-			
-		if row == 1 :
-			check_top = False
-			
-		if row == self.rows - 1 :
-			check_bottom = False
-			
-		# if left and right are potentially populated, but their sum
-		# is not at least one, it is impossible for a cell to be born 
-		if(check_left and check_right) :
-			if self.blue_column_counts[column - 1] == 0 and self.blue_column_counts[column + 1] == 0 :
-				return False
-				
-		# same logic as above, just applied for different situations
-		if check_left and not check_right :
-			if self.blue_column_counts[column - 1] == 0 :
-				return False
-				
-		# same logic as above....
-		if check_right and not check_left :
-			if self.blue_column_counts[column + 1] == 0 :
-				return False
-				
-		# if made it this far, manually check
-		if check_left :
-			if self.current_state[row][column - 1] == 'B' :
-				blue_neighbors += 1
-				
-		if check_right :
-			if self.current_state[row][column + 1] == 'B' :
-				blue_neighbors += 1
-				
-		if check_top :
-			if self.current_state[row - 1][column] == 'B' :
-				blue_neighbors += 1
-		
-		if check_bottom :
-			if self.current_state[row + 1][column] == 'B' :
-				blue_neighbors += 1
-				
-		# check top left diagonal
-		if check_left and check_top :
-			if self.current_state[row - 1][column - 1] == 'B' :
-				blue_neighbors += 1
-				
-		# check bottom left diagonal
-		if check_left and check_bottom :
-			if self.current_state[row + 1][column - 1] == 'B' :
-				blue_neighbors += 1
-				
-		# check top right diagonal
-		if check_right and check_top :
-			if self.current_state[row - 1][column + 1] == 'B' :
-				blue_neighbors += 1
-				
-		# check bottom right diagonal
-		if check_right and check_bottom : 
-			if self.current_state[row + 1][column + 1] == 'B' :
-				blue_neighbors += 1
-				
-		# final logic for birth
-		if blue_neighbors == 3 :
-			return True
-		else : 
-			return False
-					
 	
 	'''
 	Finds the number of surrounding cells with the given search char
@@ -351,37 +183,30 @@ class GameLogic :
 			return
 			
 		# Game Logic
-		#time.sleep(2)
 		# start at one because zero indexes are never populated
 		for row in range(1, self.rows) :
 		
 			for column in range(1, self.columns) :
 				
 				empty_cell = self.is_empty(row, column)
+				surrounding_green = self.search_surroundings(row, column, 'G')
+				surrounding_blue = self.search_surroundings(row, column, 'B')
 				
 				# if an empty cell, check for possible births
 				if empty_cell :
 				
-					green_birth = self.check_green_birth(row, column)
-					blue_birth = self.check_blue_birth(row, column)
+					if surrounding_blue == 3 and surrounding_green == 3 :
+						# do nothing
+						continue
 					
-					if green_birth and blue_birth :
-						
-						self.next_state[row][column] = ' '
-						
-					elif green_birth :
-						
-						self.next_state[row][column] = 'G'
-						
-					elif blue_birth :
-						
+					if surrounding_blue == 3 :
 						self.next_state[row][column] = 'B'
+						
+					elif surrounding_green == 3 :
+						self.next_state[row][column] = 'G'
 				
 				# otherwise check blue stuff
 				elif self.current_state[row][column] == 'B' :
-				
-					surrounding_green = self.search_surroundings(row, column, 'G')
-					surrounding_blue = self.search_surroundings(row, column, 'B')
 					
 					#check population dead conditions
 					if surrounding_blue < 2 or surrounding_blue > 3 :
@@ -397,9 +222,6 @@ class GameLogic :
 				
 				# otherwise check green stuff
 				else :
-					
-					surrounding_green = self.search_surroundings(row, column, 'G')
-					surrounding_blue = self.search_surroundings(row, column, 'B')
 					
 					#check population dead conditions
 					if surrounding_green < 2 or surrounding_green > 3 :

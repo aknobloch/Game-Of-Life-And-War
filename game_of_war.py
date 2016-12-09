@@ -24,11 +24,11 @@ def start(startb, blueb, greenb, canvas, runner) :
 		
 def reset(startb, blueb, greenb, canvas, game_runner) :
 	
-	canvas.reset()
 	startb.config(text = "Start")
 	blueb.state(["!disabled"])
 	greenb.state(["!disabled"])
-	game_runner.reset()
+	game_runner.rollback()
+	canvas.paint_enabled = True
 
 # Initialize window
 root = Tk()
@@ -49,7 +49,8 @@ square_pixel_size = 10
 game_board_len = int(screen_width / square_pixel_size)
 game_board_height = int(screen_height / square_pixel_size)
 
-my_graph = GraphWidget(main_frame, game, game_board_height, game_board_len, square_pixel_size)
+#my_graph = GraphWidget(main_frame, game, game_board_height, game_board_len, square_pixel_size)
+my_graph = GraphWidget(main_frame, game, 10, 10, square_pixel_size)
 
 #Initialize game runner with canvas
 game.initialize(my_graph)

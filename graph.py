@@ -65,7 +65,7 @@ class GraphWidget :
 	'''
 	Paints the column and row the appropriate color
 	'''	
-	def paint_clear(self, row, column) :
+	def paint_background(self, row, column) :
 		
 		# paint it the default background
 		self.__paint_coordinate_color(row, column, GraphColor.background.value)
@@ -121,7 +121,7 @@ class GraphWidget :
 		if(column_clicked > self.total_columns - 1 or row_clicked > self.total_rows - 1) :
 			return
 			
-		# check for zero index
+		# check for zero index, zero is never populated
 		if(column_clicked == 0) or (row_clicked == 0) :
 			return
 		
@@ -204,6 +204,8 @@ class GraphWidget :
 			for column in range(self.total_columns) :
 				
 				self.__paint_coordinate_color(row, column, GraphColor.background.value)
+				
+	
 	
 	
 

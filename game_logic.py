@@ -1,4 +1,5 @@
 import time
+from copy import deepcopy
 
 class GameLogic :
 	
@@ -25,6 +26,11 @@ class GameLogic :
 		self.rows = canvas.get_rows()
 		self.columns = canvas.get_columns()
 		
+		# starts as null pointer, once user hits start the first time a snapshot is saved
+		self.game_board_snapshot = None
+		self.blue_count_snapshot = None
+		self.green_count_snapshot = None
+		
 		self.current_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
 		self.next_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
 		self.green_column_counts = [0 for x in range(self.columns)]
@@ -40,6 +46,7 @@ class GameLogic :
 		self.current_state[row][column] = 'G'
 		# update counts
 		self.green_column_counts[column] += 1
+		
 		
 	
 	'''
@@ -182,6 +189,13 @@ class GameLogic :
 		if not self.running :
 			return
 			
+		# if about to start and snapshot has not been saved (I.E. first time)
+		if self.game_board_snapshot == None :
+			self.game_board_snapshot = deepcopy(self.current_state)
+			self.blue_count_snapshot = deepcopy(self.blue_column_counts)
+			self.green_count_snapshot = deepcopy(self.green_column_counts)
+		
+		
 		# Game Logic
 		# start at one because zero indexes are never populated
 		for row in range(1, self.rows) :
@@ -267,12 +281,15 @@ class GameLogic :
 				# check current green
 				elif current_cell == 'G' :
 					self.canvas.paint_alive_green(row, column)
-					self.green_column_counts[column] += 1
+					# Only update count if new birth
+					if previous_cell != 'G' :
+						self.green_column_counts[column] += 1
 					
 				# check current blue
 				elif current_cell == 'B' :
 					self.canvas.paint_alive_blue(row, column)
-					self.blue_column_counts[column] += 1
+					if previous_cell != 'B' :
+						self.blue_column_counts[column] += 1
 					
 		# after, swap current state with next state
 		self.current_state = self.next_state
@@ -286,6 +303,46 @@ class GameLogic :
 		self.running = False
 		self.current_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
 		self.next_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
+		self.green_column_counts = [0 for x in range(self.columns)]
+		self.blue_column_counts = [0 for x in range(self.columns)]
+		self.game_board_snapshot = None
+		self.blue_count_snapshot = None
+		self.green_count_snapshot = None
+	
+	def rollback(self) :
 		
+		# Doesn't make sense to rollback before you've even started...
+		if self.game_board_snapshot == None or \
+		   self.blue_count_snapshot == None or \
+		   self.green_count_snapshot == None :
+		   
+		   return
+		
+		# Rollback to all previous snapshots
+		self.running = False
+		self.current_state = self.game_board_snapshot
+		self.blue_column_counts = self.blue_count_snapshot
+		self.green_column_counts = self.green_count_snapshot
+		self.next_state = [[' ' for x in range(self.columns)] for y in range(self.rows)]
+		
+		# Repaint the canvas
+		for row in range(1, self.rows) :
+		
+			for column in range(1, self.columns) :
+				
+				cell = self.current_state[row][column]
+				
+				if cell == 'B' :
+					
+					self.canvas.paint_alive_blue(row, column)
+					
+				elif cell == 'G' :
+					
+					self.canvas.paint_alive_green(row, column)
+					
+				else :
+					
+					self.canvas.paint_background(row, column)
+					
 				
 		

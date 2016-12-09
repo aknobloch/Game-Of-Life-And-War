@@ -67,19 +67,19 @@ v.set(1) # 1 is green radio button
 
 # Add green color radio button
 green_button = ttk.Radiobutton(label_group, text = "Green", variable = v, command = lambda: my_graph.set_color(GraphColor.alive_green), value = 1)
-green_button.grid(column = 2, row = 1)
+green_button.grid(column = 2, row = 1, padx = 5, pady = 5)
 
 # Add blue color radio button
 blue_button = ttk.Radiobutton(label_group, text = "Blue", variable = v, command = lambda: my_graph.set_color(GraphColor.alive_blue), value = 2)
-blue_button.grid(column = 3, row = 1)
+blue_button.grid(column = 3, row = 1, padx = 5, pady = 5)
 
 # Add start button
 start_button = ttk.Button(label_group, text = "Start", command = lambda: start(start_button, blue_button, green_button, my_graph, game))
-start_button.grid(column = 3, row = 2)
+start_button.grid(column = 2, row = 2, columnspan = 2, padx = 5, pady = 5)
 
 # Add reset button
 reset_button = ttk.Button(label_group, text = "Reset", command = lambda: reset(start_button, blue_button, green_button, my_graph, game))
-reset_button.grid(column = 2, row = 2)
+reset_button.grid(column = 2, row = 3, columnspan = 2, padx = 5, pady = 5)
 
 while True:
     

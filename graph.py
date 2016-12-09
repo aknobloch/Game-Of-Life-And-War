@@ -198,7 +198,7 @@ class GraphWidget :
 	'''
 	Repaints all cells to the background color.
 	'''
-	def reset(self) :
+	def clear(self) :
 		
 		self.paint_enabled = True
 		

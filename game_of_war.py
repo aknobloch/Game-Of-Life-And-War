@@ -28,6 +28,15 @@ def reset(startb, blueb, greenb, canvas, game_runner) :
 	blueb.state(["!disabled"])
 	greenb.state(["!disabled"])
 	game_runner.rollback()
+	canvas.paint_enabled = True\
+	
+def clear(startb, blueb, greenb, canvas, game_runner) :
+	
+	startb.config(text = "Start")
+	blueb.state(["!disabled"])
+	greenb.state(["!disabled"])
+	game_runner.reset()
+	canvas.clear()
 	canvas.paint_enabled = True
 
 # Initialize window
@@ -80,6 +89,10 @@ start_button.grid(column = 2, row = 2, columnspan = 2, padx = 5, pady = 5)
 # Add reset button
 reset_button = ttk.Button(label_group, text = "Reset", command = lambda: reset(start_button, blue_button, green_button, my_graph, game))
 reset_button.grid(column = 2, row = 3, columnspan = 2, padx = 5, pady = 5)
+
+# Add clear button
+clear_button = ttk.Button(label_group, text = "Clear", command = lambda: clear(start_button, blue_button, green_button, my_graph, game))
+clear_button.grid(column = 2, row = 4, columnspan = 2, padx = 5, pady = 5)
 
 while True:
     

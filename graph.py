@@ -194,7 +194,10 @@ class GraphWidget :
 		
 	def get_columns(self) :
 		return self.total_columns
-		
+	
+	'''
+	Repaints all cells to the background color.
+	'''
 	def reset(self) :
 		
 		self.paint_enabled = True

@@ -309,6 +309,9 @@ class GameLogic :
 		self.blue_count_snapshot = None
 		self.green_count_snapshot = None
 	
+	'''
+	Resets the game logic and canvas back to the last saved starting configuration.
+	'''
 	def rollback(self) :
 		
 		# Doesn't make sense to rollback before you've even started...

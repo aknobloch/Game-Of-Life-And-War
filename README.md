@@ -1,6 +1,4 @@
 # Game-Of-War
-Created December 2016
-
 Game Of War is a cellular automaton game based on [Game of Life](https://www.youtube.com/watch?v=R9Plq-D1gEk). The rules are fairly simple:
 
 For each civilization, the following rules apply:

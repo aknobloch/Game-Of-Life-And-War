@@ -39,7 +39,8 @@ def clear(startb, blueb, greenb, canvas, game_runner) :
 	canvas.clear()
 	canvas.paint_enabled = True
 
-def main() :
+def main(width, height) :
+
 	# Initialize window
 	root = Tk()
 	root.title("Game of War")
@@ -51,10 +52,15 @@ def main() :
 	#Create game runner
 	game = GameLogic()
 
-	# calculate screen size to determine game board size
-	screen_width = root.winfo_screenwidth() * 1/2  # game board covers 1/2 of screen
-	screen_height = root.winfo_screenheight() * 1/2
+	# set game board size
+	screen_width = width
+	screen_height = height
 	square_pixel_size = 10
+
+	#  if width or heigh isn't given, specify via screen size calculation
+	if(width is None or height is None) :
+		screen_width = root.winfo_screenwidth() * 1/2  # game board covers 1/2 of screen
+		screen_height = root.winfo_screenheight() * 1/2
 
 	game_board_len = int(screen_width / square_pixel_size)
 	game_board_height = int(screen_height / square_pixel_size)
@@ -102,5 +108,3 @@ def main() :
 		
 		# update canvas
 		root.update()
-
-main()

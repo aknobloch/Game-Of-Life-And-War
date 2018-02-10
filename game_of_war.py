@@ -106,5 +106,9 @@ def main(width, height) :
 		# update game logic
 		game.update()
 		
-		# update canvas
-		root.update()
+		try :
+			# update canvas
+			root.update()
+		except TclError :
+			# application no longer active
+			exit()

@@ -1,4 +1,4 @@
-# Game-Of-War
+# Game Of War
 Game Of War is a cellular automaton game based on [Game of Life](https://www.youtube.com/watch?v=R9Plq-D1gEk). The rules are fairly simple:
 
 For each civilization, the following rules apply:
@@ -13,6 +13,18 @@ When civilizations meet, the following rules apply:
 * A dead cell with even blue neighbors and even green neighbors stays dead.
 
 Additionally, Game of War does not adhere to the standard infinite world that most Game of Life boards follow. Instead, Game of War takes place in a finite space.
+
+# How to Play
+
+### Prerequisites:
+* Python 3
+* Tkinter (Likely included w/ Python)
+
+### Launching the Game
+1. Navigate to the directory, then run `python game_of_war.py`. If you are on Ubuntu or similar, you may have to explicitly use Python 3 via `python3 game_of_war.py`. 
+2. The game board will be automatically sized to your screen. 
+3. First, place the starting Green civiliazations by clicking on the grid. Next, select "Blue" from the radio buttons at the bottom and place the Blue civilizations. 
+4. Press "Start" to start the game, then "Stop" or "Reset" to finish.
 
 ---
 

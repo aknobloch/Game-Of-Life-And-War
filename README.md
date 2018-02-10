@@ -21,10 +21,11 @@ Additionally, Game of War does not adhere to the standard infinite world that mo
 * Tkinter (Likely included w/ Python)
 
 ### Launching the Game
-1. Navigate to the directory, then run `python .` or `python game_of_war.py`. If you are on Ubuntu or similar, you may have to explicitly use Python 3. 
-2. The game board will be automatically sized to your screen. 
-3. First, place the starting Green civiliazations by clicking on the grid. Next, select "Blue" from the radio buttons at the bottom and place the Blue civilizations. 
-4. Press "Start" to start the game, then "Stop" or "Reset" to finish.
+1. Navigate to the directory, then run `python .`, or you can specify the game board size by supplying the width and height, like `python . 800 600`. If the game board is not specified, it will dynamically calculate from the width and height of your screen. *Note: this calculation does not perform well with multiple monitors*. 
+
+### Playing the Game
+1. First, place the starting Green civiliazations by clicking on the grid. Next, select "Blue" from the radio buttons at the bottom and then place the starting Blue civilizations. 
+2. Press "Start" to start the game, then "Stop" or "Reset" to finish.
 
 ---
 
